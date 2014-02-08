@@ -34,7 +34,7 @@
 	$contacts = $contacts->fetchAll(PDO::FETCH_ASSOC);
 	$row_count = count($contacts);
 
-	$contacts = $dbh->prepare("SELECT * FROM contact LIMIT {$pagination_offset}, {$rows_per_page}");
+	$contacts = $dbh->prepare("SELECT * FROM contact ORDER BY date DESC LIMIT {$pagination_offset}, {$rows_per_page}");
 	$contacts->execute();
 	$contacts = $contacts->fetchAll(PDO::FETCH_ASSOC);
 
