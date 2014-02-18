@@ -87,7 +87,7 @@
 		$delete->bindParam('id', $id, PDO::PARAM_INT);
 		$delete->execute();
 
-		header('Location: contact.php?success=The row has been deleted successfully');
+		header('Location: index.php?success=The row has been deleted successfully');
 	}
 
 	//CSV Process ----------------------------------------------------------------------------------
@@ -239,7 +239,7 @@
 	<header class="navbar navbar-static-top bs-docs-nav" role="banner">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="contact.php">Contact <small>by WebChimp</small></a>
+				<a class="navbar-brand" href="index.php">Contact <small>by WebChimp</small></a>
 			</div>
 		</div>
 	</header>
@@ -285,7 +285,7 @@
 		</form>
 
 		<div class="buttons pull-right">
-			<a href="contact.php?csv=1" class="btn btn-primary"><span class="glyphicon glyphicon-file"></span> Download CSV</a>
+			<a href="index.php?csv=1" class="btn btn-primary"><span class="glyphicon glyphicon-file"></span> Download CSV</a>
 		</div>
 
 		<?php if($row_count): ?>
@@ -332,15 +332,15 @@
 		<?php if($pagination): ?>
 			<ul class="pagination pull-right">
 				<?php if($page > 0): ?>
-					<li><a href="contact.php?page=<?php echo $page; ?>">&laquo;</a></li>
+					<li><a href="index.php?page=<?php echo $page; ?>">&laquo;</a></li>
 				<?php endif; ?>
 
 				<?php for($i = 0; $i < $num_pages; $i++): ?>
-					<li <?php echo $page == $i? 'class="active"' : ''; ?>><a href="contact.php?page=<?php echo $i+1; ?>"><?php echo $i+1; ?></a></li>
+					<li <?php echo $page == $i? 'class="active"' : ''; ?>><a href="index.php?page=<?php echo $i+1; ?>"><?php echo $i+1; ?></a></li>
 				<?php endfor; ?>
 
 				<?php if($page < $num_pages): ?>
-					<li><a href="contact.php?page=<?php echo $page+2; ?>">&raquo;</a></li>
+					<li><a href="index.php?page=<?php echo $page+2; ?>">&raquo;</a></li>
 				<?php endif; ?>
 			</ul>
 		<?php endif; ?>
@@ -381,7 +381,7 @@
 			var fila = $(this).parents('tr');
 			var id = fila.find('.contact-id').text();
 
-			$('#contact-delete-confirm').attr('href', 'contact.php?delete=' + id);
+			$('#contact-delete-confirm').attr('href', 'index.php?delete=' + id);
 			$('#contact-delete').modal('show');
 		});
 	});
