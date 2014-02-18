@@ -196,6 +196,11 @@
 			margin-bottom: -20px;
 		}
 
+		.intro{
+
+			padding-bottom: 0;
+		}
+
 	</style>
 </head>
 <body>
@@ -246,7 +251,7 @@
 
 	<div id="content" class="bs-header">
 		<div class="container">
-			<div class="well">
+			<div class="well well-sm intro">
 				<p>Contact will show you all the information from your contact form.</p>
 			</div>
 		</div>
@@ -260,90 +265,93 @@
 			</div>
 		<?php endif; ?>
 
-		<form class="form-inline pull-left search-by" role="form" method="post">
-			<div class="form-group">
-				<label for="search-by">Search by</label>
-				<select name="search-by" id="search-by" class="form-control">
-					<option value="email" <?php echo $filter_by == 'email'? 'selected="selected"' : ''; ?>>Email</option>
-					<option value="name" <?php echo $filter_by == 'name'? 'selected="selected"' : ''; ?>>Name</option>
-				</select>
-				<input type="text" name="search-email" class="form-control" id="search-email" placeholder="Search" value="<?php echo isset($_POST['search-email'])? $_POST['search-email'] : ''; ?>">
-			</div>
-			<button type="submit" class="btn btn-default">Search</button>
-		</form>
+		<div class="controls clearfix">
+			<form class="form-inline pull-left search-by" role="form" method="post">
+				<div class="form-group">
+					<label for="search-by">Search by</label>
+					<select name="search-by" id="search-by" class="form-control">
+						<option value="email" <?php echo $filter_by == 'email'? 'selected="selected"' : ''; ?>>Email</option>
+						<option value="name" <?php echo $filter_by == 'name'? 'selected="selected"' : ''; ?>>Name</option>
+					</select>
+					<input type="text" name="search-email" class="form-control" id="search-email" placeholder="Search" value="<?php echo isset($_POST['search-email'])? $_POST['search-email'] : ''; ?>">
+				</div>
+				<button type="submit" class="btn btn-default">Search</button>
+			</form>
 
-		<form class="form-inline pull-left filter-date" role="form" method="post">
-			<div class="form-group">
-				<label for="filter-date-from">Filter by date</label>
-				<input type="text" name="filter-date-from" class="date-input form-control" id="filter-date-from" placeholder="Date From" value="<?php echo $filter_date_from? $filter_date_from : ''; ?>">
-			</div>
-			<div class="form-group">
-				<label class="sr-only" for="filter-date-to">Date To</label>
-				<input type="text" name="filter-date-to" class="date-input form-control" id="filter-date-to" placeholder="Date To" value="<?php echo $filter_date_to? $filter_date_to : ''; ?>">
-			</div>
-			<button type="submit" class="btn btn-default">Filter</button>
-		</form>
+			<form class="form-inline pull-left filter-date" role="form" method="post">
+				<div class="form-group">
+					<label for="filter-date-from">Filter by date</label>
+					<input type="text" name="filter-date-from" class="date-input form-control" id="filter-date-from" placeholder="Date From" value="<?php echo $filter_date_from? $filter_date_from : ''; ?>">
+				</div>
+				<div class="form-group">
+					<label class="sr-only" for="filter-date-to">Date To</label>
+					<input type="text" name="filter-date-to" class="date-input form-control" id="filter-date-to" placeholder="Date To" value="<?php echo $filter_date_to? $filter_date_to : ''; ?>">
+				</div>
+				<button type="submit" class="btn btn-default">Filter</button>
+			</form>
 
-		<div class="buttons pull-right">
-			<a href="index.php?csv=1" class="btn btn-primary"><span class="glyphicon glyphicon-file"></span> Download CSV</a>
+			<div class="buttons pull-right">
+				<a href="index.php?csv=1" class="btn btn-primary"><span class="glyphicon glyphicon-file"></span> Download CSV</a>
+			</div>
 		</div>
 
 		<?php if($row_count): ?>
-		<table class="table table-striped table-bordered table-hover">
-			<thead>
-				<tr>
-					<th class=" table-id align-center">#</th>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Date</th>
-					<th class="table-action align-center">View</th>
-					<th class="table-action align-center">Delete</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach($contacts as $contact): ?>
 
-				<tr>
-					<td class="contact-id align-center"><?php echo $contact['id']; ?></td>
-					<td class="contact-name"><?php echo $contact['name']; ?></td>
-					<td class="contact-email"><a href="mailto:<?php echo $contact['email']; ?>"><?php echo $contact['email']; ?></a></td>
-					<td class="contact-date"><?php echo date('r', strtotime($contact['date'])); ?></td>
-					<td class="align-center">
-						<button type="button" class="btn btn-primary btn-xs contact-view">View <span class="glyphicon glyphicon-eye-open"></span></button>
-						<div class="contact-comments hidden"><p><?php echo $contact['comments']; ?></p></div>
-					</td>
-					<td class="align-center"><button type="button" class="btn btn-danger btn-xs contact-delete">Delete <span class="glyphicon glyphicon-trash"></span></button></td>
-				</tr>
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th class=" table-id align-center">#</th>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Date</th>
+						<th class="table-action align-center">Details</th>
+						<th class="table-action align-center">Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach($contacts as $contact): ?>
 
-				<?php endforeach; ?>
-			</tbody>
-			<tfoot>
-				<tr>
-					<th class="align-center">#</th>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Date</th>
-					<th class="align-center">View</th>
-					<th class="align-center">Delete</th>
-				</tr>
-			</tfoot>
-		</table>
+					<tr>
+						<td class="contact-id align-center"><?php echo $contact['id']; ?></td>
+						<td class="contact-name"><?php echo $contact['name']; ?></td>
+						<td class="contact-email"><a href="mailto:<?php echo $contact['email']; ?>"><?php echo $contact['email']; ?></a></td>
+						<td class="contact-date"><?php echo date('l jS \of F Y h:i:s A', strtotime($contact['date'])); ?></td>
+						<td class="align-center">
+							<button type="button" class="btn btn-primary btn-xs contact-view">View <span class="glyphicon glyphicon-eye-open"></span></button>
+							<div class="contact-comments hidden"><p><?php echo $contact['comments']; ?></p></div>
+						</td>
+						<td class="align-center"><button type="button" class="btn btn-danger btn-xs contact-delete">Delete <span class="glyphicon glyphicon-trash"></span></button></td>
+					</tr>
 
-		<?php if($pagination): ?>
-			<ul class="pagination pull-right">
-				<?php if($page > 0): ?>
-					<li><a href="index.php?page=<?php echo $page; ?>">&laquo;</a></li>
-				<?php endif; ?>
+					<?php endforeach; ?>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th class="align-center">#</th>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Date</th>
+						<th class="align-center">Details</th>
+						<th class="align-center">Delete</th>
+					</tr>
+				</tfoot>
+			</table>
 
-				<?php for($i = 0; $i < $num_pages; $i++): ?>
-					<li <?php echo $page == $i? 'class="active"' : ''; ?>><a href="index.php?page=<?php echo $i+1; ?>"><?php echo $i+1; ?></a></li>
-				<?php endfor; ?>
+			<?php if($pagination && $num_pages > 1): ?>
+				<ul class="pagination pull-right">
+					<?php if($page > 0): ?>
+						<li><a href="index.php?page=<?php echo $page; ?>">&laquo;</a></li>
+					<?php endif; ?>
 
-				<?php if($page < $num_pages): ?>
-					<li><a href="index.php?page=<?php echo $page+2; ?>">&raquo;</a></li>
-				<?php endif; ?>
-			</ul>
-		<?php endif; ?>
+					<?php for($i = 0; $i < $num_pages; $i++): ?>
+						<li <?php echo $page == $i? 'class="active"' : ''; ?>><a href="index.php?page=<?php echo $i+1; ?>"><?php echo $i+1; ?></a></li>
+					<?php endfor; ?>
+
+					<?php if($page+1 < $num_pages): ?>
+						<li><a href="index.php?page=<?php echo $page+2; ?>">&raquo;</a></li>
+					<?php endif; ?>
+				</ul>
+			<?php endif; ?>
 
 		<?php /* No results */ else: ?>
 
