@@ -20,6 +20,17 @@
 	/* *********************************************************************************************
 	********************************************************************************************* */
 
+	function get_entry_metas($dbh, $entry_id){
+
+		$metas = $dbh->prepare("SELECT meta, value, alias FROM contact_meta WHERE id = :id");
+		$metas->bindParam(':id', $entry_id);
+		$metas->execute();
+
+		$resultados = $metas->fetchAll();
+
+		return $resultados;
+	}
+
 	//connect to SQLite database
 	try{ $dbh = new PDO("sqlite:{$database_file}"); }
 	catch(PDOException $e){ echo $e->getMessage(); }
@@ -318,7 +329,26 @@
 						<td class="contact-date"><?php echo date('l jS \of F Y h:i:s A', strtotime($contact['date'])); ?></td>
 						<td class="align-center">
 							<button type="button" class="btn btn-primary btn-xs contact-view">View <span class="glyphicon glyphicon-eye-open"></span></button>
-							<div class="contact-comments hidden"><p><?php echo $contact['comments']; ?></p></div>
+
+							<div class="contact-details hidden">
+								<?php $metas = get_entry_metas($dbh, $contact['id']); if(count($metas)): ?>
+								<div class="metas">
+									<table class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr><th>Data</th><th>Value</th></tr>
+										</thead>
+										<tbody>
+											<?php foreach($metas as $meta): ?>
+												<tr><th><?php echo $meta['alias']; ?></th><td><?php echo $meta['value']; ?></td></tr>
+											<?php endforeach; ?>
+										</tbody>
+									</table>
+								</div>
+								<?php endif; ?>
+
+								<h2>Comments</h2>
+								<p><?php echo $contact['comments']; ?></p>
+							</div>
 						</td>
 						<td class="align-center"><button type="button" class="btn btn-danger btn-xs contact-delete">Delete <span class="glyphicon glyphicon-trash"></span></button></td>
 					</tr>
@@ -377,7 +407,7 @@
 
 			var fila = $(this).parents('tr');
 			var title = fila.find('.contact-name').text() + ' (' + fila.find('.contact-email a').text() + ')';
-			var body = fila.find('.contact-comments').html();
+			var body = fila.find('.contact-details').html();
 
 			$('#contact-view .modal-title').text(title);
 			$('#contact-view .modal-body').html(body);

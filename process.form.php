@@ -1,32 +1,6 @@
 <?php
 
-	function contact_entry($dbh, $name, $email, $comments){
-
-		try{
-			$contact = $dbh->prepare("INSERT INTO contact(name, email, comments, date) VALUES (:name, :email, :comments, datetime('now'))");
-			$contact->bindParam(':name', $name);
-			$contact->bindParam(':email', $email);
-			$contact->bindParam(':comments', $comments);
-
-			$contact->execute();
-			return $dbh->lastInsertId();
-		}
-
-		catch(PDOException $e){ echo $e->getMessage(); }
-	}
-
-	function contact_entry_meta($dbh, $entry_id, $metas){
-
-		foreach($metas as $key => $value){
-
-			$contact = $dbh->prepare("INSERT INTO contact_meta(id, meta, value) VALUES (:id, :meta, :value)");
-			$contact->bindParam(':id', $entry_id);
-			$contact->bindParam(':meta', $key);
-			$contact->bindParam(':value', $value);
-
-			$contact->execute();
-		}
-	}
+	require('contact.inc.php');
 
 	$name = 		$_POST['contact-form-name'];
 	$email = 		$_POST['contact-form-email'];
@@ -38,18 +12,15 @@
 		die('Please fill name and email to proceed');
 	}
 
-	//Define the file from the database
-	$database_file = 'contact.sqlite';
+	$chimpregistry = new ChimpRegistry();
 
-	//connect to SQLite database
-	try{
-		$dbh = new PDO("sqlite:{$database_file}");
-		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	}
-	catch(PDOException $e){ echo $e->getMessage(); }
+	$chimpregistry->registry_name = $name;
+	$chimpregistry->registry_email = $email;
+	$chimpregistry->registry_comments = $comments;
 
-	$entry_id = contact_entry($dbh, $name, $email, $comments);
-	contact_entry_meta($dbh, $entry_id, array('company' => $company));
+	$chimpregistry->addMeta('company', $company, 'Company');
 
-	exit('Your form was sent!, go to the <a href="index.php">dashboard</a> or <a href="form.html">try the form one more time</a>');
+	$chimpregistry->insert();
+
+	exit('Your form was sent! Go to the <a href="index.php">dashboard</a> or <a href="form.html">try the form one more time</a>');
 ?>
