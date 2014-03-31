@@ -11,8 +11,11 @@
 	Configuration **********************************************************************************
 	********************************************************************************************* */
 
+	global $contact_file;
+
 	//Define the file from the database
 	$database_file = 'contact.sqlite';
+	$contact_file = $contact_file ? $contact_file : 'index.php';
 
 	//Number of rows per page
 	$rows_per_page = '20';
@@ -32,6 +35,7 @@
 	}
 
 	//connect to SQLite database
+	$database_file = dirname(__FILE__) . "/{$database_file}";
 	try{ $dbh = new PDO("sqlite:{$database_file}"); }
 	catch(PDOException $e){ echo $e->getMessage(); }
 
@@ -98,7 +102,7 @@
 		$delete->bindParam('id', $id, PDO::PARAM_INT);
 		$delete->execute();
 
-		header('Location: index.php?success=The row has been deleted successfully');
+		header('Location: '.$contact_file.'?success=The row has been deleted successfully');
 	}
 
 	//CSV Process ----------------------------------------------------------------------------------
@@ -255,7 +259,7 @@
 	<header class="navbar navbar-static-top bs-docs-nav" role="banner">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="index.php">Contact <small>by WebChimp</small></a>
+				<a class="navbar-brand" href="<?php echo $contact_file; ?>">Contact <small>by WebChimp</small></a>
 			</div>
 		</div>
 	</header>
@@ -302,7 +306,7 @@
 			</form>
 
 			<div class="buttons pull-right">
-				<a href="index.php?csv=1" class="btn btn-primary"><span class="glyphicon glyphicon-file"></span> Download CSV</a>
+				<a href="<?php echo $contact_file; ?>?csv=1" class="btn btn-primary"><span class="glyphicon glyphicon-file"></span> Download CSV</a>
 			</div>
 		</div>
 
@@ -370,15 +374,15 @@
 			<?php if($pagination && $num_pages > 1): ?>
 				<ul class="pagination pull-right">
 					<?php if($page > 0): ?>
-						<li><a href="index.php?page=<?php echo $page; ?>">&laquo;</a></li>
+						<li><a href="<?php echo $contact_file; ?>?page=<?php echo $page; ?>">&laquo;</a></li>
 					<?php endif; ?>
 
 					<?php for($i = 0; $i < $num_pages; $i++): ?>
-						<li <?php echo $page == $i? 'class="active"' : ''; ?>><a href="index.php?page=<?php echo $i+1; ?>"><?php echo $i+1; ?></a></li>
+						<li <?php echo $page == $i? 'class="active"' : ''; ?>><a href="<?php echo $contact_file; ?>?page=<?php echo $i+1; ?>"><?php echo $i+1; ?></a></li>
 					<?php endfor; ?>
 
 					<?php if($page+1 < $num_pages): ?>
-						<li><a href="index.php?page=<?php echo $page+2; ?>">&raquo;</a></li>
+						<li><a href="<?php echo $contact_file; ?>?page=<?php echo $page+2; ?>">&raquo;</a></li>
 					<?php endif; ?>
 				</ul>
 			<?php endif; ?>
@@ -419,7 +423,7 @@
 			var fila = $(this).parents('tr');
 			var id = fila.find('.contact-id').text();
 
-			$('#contact-delete-confirm').attr('href', 'index.php?delete=' + id);
+			$('#contact-delete-confirm').attr('href', '<?php echo $contact_file; ?>?delete=' + id);
 			$('#contact-delete').modal('show');
 		});
 	});

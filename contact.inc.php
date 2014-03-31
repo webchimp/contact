@@ -22,6 +22,7 @@
 
 			//connect to SQLite database
 			try{
+				$database_file = dirname(__FILE__) . "/{$database_file}";
 				$this->dbh = new PDO("sqlite:{$database_file}");
 				$this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			}
